@@ -5,3 +5,4 @@ Streamline Regular/
 .env
 .env.local
 .DS_Store
+.vercel
