@@ -596,6 +596,10 @@
       font-weight: 600;
     }
 
+    #dropdownValue.placeholder {
+      color: #999999;
+    }
+
     .form-input:focus,
     .form-select:focus,
     .form-textarea:focus {
@@ -749,7 +753,7 @@
             <label>Feature</label>
             <div class="custom-dropdown" id="feedbackDropdown">
               <button type="button" class="dropdown-trigger">
-                <span id="dropdownValue">Icon Set</span>
+                <span id="dropdownValue" class="placeholder">Select a feature...</span>
                 <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 8">
                   <path d="M1 1l5 5 5-5" stroke="#2A394A" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -759,7 +763,7 @@
                 <div class="dropdown-option" data-value="Single Icon">Single Icon</div>
                 <div class="dropdown-option" data-value="General">General</div>
               </div>
-              <input type="hidden" id="feedbackFeature" name="feedbackFeature" value="Icon Set" required />
+              <input type="hidden" id="feedbackFeature" name="feedbackFeature" value="" required />
             </div>
           </div>
 
@@ -1254,8 +1258,10 @@
       // Clear feedback form fields
       document.getElementById('feedbackName').value = '';
       document.getElementById('feedbackText').value = '';
-      document.getElementById('feedbackFeature').value = 'Icon Set';
-      document.getElementById('dropdownValue').textContent = 'Icon Set';
+      document.getElementById('feedbackFeature').value = '';
+      const dropdownValue = document.getElementById('dropdownValue');
+      dropdownValue.textContent = 'Select a feature...';
+      dropdownValue.classList.add('placeholder');
       selectedFiles = [];
       document.getElementById('fileList').innerHTML = '';
       document.getElementById('feedbackMessage').style.display = 'none';
@@ -1263,7 +1269,6 @@
       // Reset dropdown styling
       const dropdownOptions = document.querySelectorAll('#feedbackDropdown .dropdown-option');
       dropdownOptions.forEach((opt) => opt.classList.remove('selected'));
-      dropdownOptions[0].classList.add('selected');
 
       showLandingScreen();
     });
@@ -1287,6 +1292,7 @@
         const value = option.getAttribute('data-value');
         feedbackFeatureInput.value = value;
         dropdownValue.textContent = value;
+        dropdownValue.classList.remove('placeholder');
 
         dropdownOptions.forEach((opt) => opt.classList.remove('selected'));
         option.classList.add('selected');
@@ -1303,9 +1309,6 @@
         dropdownMenu.classList.remove('open');
       }
     });
-
-    // Set initial selected option
-    dropdownOptions[0].classList.add('selected');
 
     feedbackFiles.addEventListener('change', (e) => {
       const files = Array.from(e.target.files || []);
