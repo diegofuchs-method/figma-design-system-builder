@@ -6,9 +6,6 @@ import { createIconSet, processBatch } from './iconSet';
 import { createIconSingle, processBatchSingle } from './iconSingle';
 import __html__ from './ui.html';
 
-// Feedback API endpoint - Update this to your Vercel deployment URL
-const FEEDBACK_API_URL = 'https://figma-design-system-builder-8333-flrm3ty3h.vercel.app/api/feedback';
-
 // Listen for messages from the UI
 figma.ui.onmessage = async (msg: any) => {
   if (msg.type === 'create-icon-set') {
@@ -130,42 +127,6 @@ figma.ui.onmessage = async (msg: any) => {
       figma.ui.postMessage({
         type: 'error',
         message: error instanceof Error ? error.message : 'Failed to create icon component'
-      });
-    }
-  }
-
-  if (msg.type === 'send-feedback') {
-    try {
-      const response = await fetch(FEEDBACK_API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          userName: msg.userName,
-          feature: msg.feature,
-          feedback: msg.feedback,
-          filesBase64: msg.filesBase64
-        })
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        figma.ui.postMessage({
-          type: 'feedback-success',
-          message: 'Feedback sent successfully!'
-        });
-      } else {
-        figma.ui.postMessage({
-          type: 'feedback-error',
-          message: result.error || 'Failed to send feedback'
-        });
-      }
-    } catch (error) {
-      figma.ui.postMessage({
-        type: 'feedback-error',
-        message: error instanceof Error ? error.message : 'Failed to send feedback'
       });
     }
   }
