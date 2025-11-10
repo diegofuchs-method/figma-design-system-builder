@@ -603,9 +603,10 @@
       flex: 1;
       min-height: 0;
       overflow-y: auto;
-      padding: 12px 16px;
+      padding: 12px 16px 16px 16px;
       display: flex;
       flex-direction: column;
+      gap: 8px;
     }
 
     /* Icon Set Builder Styles */
@@ -883,7 +884,10 @@
       flex-direction: column;
       gap: 8px;
       width: 100%;
+      flex: 1;
       min-height: 0;
+      overflow-y: auto;
+      padding-right: 4px;
     }
 
     .form-label {
