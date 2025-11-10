@@ -908,12 +908,81 @@
       color: #2A394A;
     }
 
-    .form-select {
-      appearance: none;
-      padding-right: 32px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%232A394A' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: calc(100% - 8px) center;
+    .custom-dropdown {
+      position: relative;
+    }
+
+    .dropdown-trigger {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #BACAD0;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+      color: #2A394A;
+      background: #ffffff;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-right: 8px;
+    }
+
+    .dropdown-trigger:hover {
+      border-color: #0D71C8;
+    }
+
+    .dropdown-trigger.open {
+      border-color: #0D71C8;
+    }
+
+    .dropdown-chevron {
+      width: 12px;
+      height: 8px;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+
+    .dropdown-trigger.open .dropdown-chevron {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #BACAD0;
+      border-radius: 4px;
+      min-width: 100%;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    .dropdown-menu.open {
+      display: block;
+    }
+
+    .dropdown-option {
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 12px;
+      color: #2A394A;
+      transition: background-color 0.15s;
+    }
+
+    .dropdown-option:hover {
+      background-color: #E5F7FF;
+    }
+
+    .dropdown-option.selected {
+      background-color: #E5F7FF;
+      color: #0D71C8;
+      font-weight: 600;
     }
 
     .form-input:focus,
@@ -1066,13 +1135,21 @@
           </div>
 
           <div class="form-group">
-            <label for="feedbackFeature">Feature</label>
-            <select id="feedbackFeature" class="form-select" required>
-              <option value="">Select a feature...</option>
-              <option value="Icon Set">Icon Set</option>
-              <option value="Single Icon">Single Icon</option>
-              <option value="General">General</option>
-            </select>
+            <label>Feature</label>
+            <div class="custom-dropdown" id="feedbackDropdown">
+              <button type="button" class="dropdown-trigger">
+                <span id="dropdownValue">Icon Set</span>
+                <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 8">
+                  <path d="M1 1l5 5 5-5" stroke="#2A394A" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-option" data-value="Icon Set">Icon Set</div>
+                <div class="dropdown-option" data-value="Single Icon">Single Icon</div>
+                <div class="dropdown-option" data-value="General">General</div>
+              </div>
+              <input type="hidden" id="feedbackFeature" name="feedbackFeature" value="Icon Set" required />
+            </div>
           </div>
 
           <div class="form-group">
@@ -1565,6 +1642,45 @@
     feedbackBackBtn.addEventListener('click', () => {
       showLandingScreen();
     });
+
+    // Custom dropdown functionality
+    const feedbackDropdown = document.getElementById('feedbackDropdown');
+    const dropdownTrigger = feedbackDropdown.querySelector('.dropdown-trigger');
+    const dropdownMenu = feedbackDropdown.querySelector('.dropdown-menu');
+    const dropdownOptions = feedbackDropdown.querySelectorAll('.dropdown-option');
+    const dropdownValue = document.getElementById('dropdownValue');
+    const feedbackFeatureInput = document.getElementById('feedbackFeature');
+
+    dropdownTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      dropdownTrigger.classList.toggle('open');
+      dropdownMenu.classList.toggle('open');
+    });
+
+    dropdownOptions.forEach((option) => {
+      option.addEventListener('click', () => {
+        const value = option.getAttribute('data-value');
+        feedbackFeatureInput.value = value;
+        dropdownValue.textContent = value;
+
+        dropdownOptions.forEach((opt) => opt.classList.remove('selected'));
+        option.classList.add('selected');
+
+        dropdownTrigger.classList.remove('open');
+        dropdownMenu.classList.remove('open');
+      });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!feedbackDropdown.contains(e.target)) {
+        dropdownTrigger.classList.remove('open');
+        dropdownMenu.classList.remove('open');
+      }
+    });
+
+    // Set initial selected option
+    dropdownOptions[0].classList.add('selected');
 
     feedbackFiles.addEventListener('change', (e) => {
       const files = Array.from(e.target.files || []);
