@@ -452,6 +452,8 @@
     .landing-screen {
       display: flex;
       flex-direction: column;
+      flex: 1;
+      min-height: 0;
     }
 
     .landing-header {
@@ -484,6 +486,7 @@
       gap: 12px;
       align-content: start;
       flex: 1;
+      min-height: 0;
     }
 
     .builder-tile {
@@ -856,8 +859,8 @@
     }
 
     .feedback-icon {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       flex-shrink: 0;
     }
 
