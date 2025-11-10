@@ -661,25 +661,38 @@
       display: block;
     }
 
+    .file-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
     .file-item {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      padding: 8px 0;
+      justify-content: space-between;
+      padding: 12px;
+      border: 1px solid #BACAD0;
+      border-radius: 4px;
       gap: 8px;
       font-size: 12px;
       color: #545F67;
+      background: #ffffff;
+      min-width: 120px;
+      position: relative;
     }
 
     .file-item-icon {
-      width: 20px;
-      height: 20px;
+      width: 32px;
+      height: 32px;
       flex-shrink: 0;
       background: #E5F7FF;
-      border-radius: 2px;
+      border-radius: 3px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 9px;
+      font-size: 10px;
       color: #0D71C8;
       font-weight: 600;
     }
@@ -687,18 +700,21 @@
     .file-item-info {
       flex: 1;
       min-width: 0;
+      text-align: center;
+      width: 100%;
     }
 
     .file-item-name {
       color: #0D71C8;
       word-break: break-word;
-      margin-bottom: 1px;
-      font-size: 12px;
+      margin-bottom: 2px;
+      font-size: 11px;
+      font-weight: 500;
     }
 
     .file-item-meta {
       color: #999999;
-      font-size: 11px;
+      font-size: 10px;
     }
 
     .file-item button {
@@ -706,15 +722,27 @@
       border: none;
       color: #999999;
       cursor: pointer;
-      font-size: 14px;
-      padding: 0;
-      margin: 0;
+      padding: 4px;
+      margin: -4px;
       flex-shrink: 0;
       transition: color 0.2s;
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .file-item button:hover {
       color: #ae2a19;
+    }
+
+    .file-item button svg {
+      width: 16px;
+      height: 16px;
     }
 
     #feedbackMessage {
@@ -1368,7 +1396,8 @@
     // File upload handling
     feedbackFiles.addEventListener('change', (e) => {
       const files = Array.from(e.target.files || []);
-      selectedFiles = files;
+      selectedFiles = [...selectedFiles, ...files];
+      feedbackFiles.value = '';  // Reset so same file can be uploaded again
       updateFileList();
     });
 
@@ -1399,7 +1428,11 @@
             <div class="file-item-name">${file.name}</div>
             <div class="file-item-meta">${sizeText}</div>
           </div>
-          <button type="button" onclick="removeFile(${index})">🗑</button>
+          <button type="button" onclick="removeFile(${index})">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+              <path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m-1 0v14a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V6h12zM10 10v8M14 10v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
         `;
         fileList.appendChild(item);
       });
