@@ -693,7 +693,7 @@
     }
 
     .form-group textarea {
-      min-height: 60px;
+      min-height: 50px;
     }
 
     label {
@@ -1012,15 +1012,16 @@
 
     .file-input-label {
       display: block;
-      padding: 8px 12px;
+      padding: 6px 8px;
       background: #f5f5f5;
-      border: 1px solid #BACAD0;
+      border: 1px dashed #BACAD0;
       border-radius: 4px;
       cursor: pointer;
       text-align: center;
-      font-size: 12px;
+      font-size: 11px;
       color: #2A394A;
       transition: all 0.2s;
+      min-height: auto;
     }
 
     .file-input-label:hover {
@@ -1033,18 +1034,30 @@
     }
 
     .file-list {
-      margin-top: 8px;
-      font-size: 12px;
+      margin-top: 4px;
+      font-size: 11px;
       color: #545F67;
-      max-height: 120px;
+      max-height: 60px;
       overflow-y: auto;
+      border: 1px solid #BACAD0;
+      border-radius: 4px;
+      background: #f5f5f5;
+      padding: 2px 0;
     }
 
     .file-item {
-      padding: 4px 0;
+      padding: 2px 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 4px;
+      line-height: 1.2;
+    }
+
+    .file-item span {
+      flex: 1;
+      min-width: 0;
+      word-break: break-all;
     }
 
     .file-item button {
@@ -1052,8 +1065,10 @@
       border: none;
       color: #ae2a19;
       cursor: pointer;
-      font-size: 12px;
-      padding: 0;
+      font-size: 10px;
+      padding: 0 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     #feedbackMessage {
