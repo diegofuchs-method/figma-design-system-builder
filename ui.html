@@ -650,42 +650,46 @@
         <h2 class="builder-title">Feedback</h2>
       </div>
 
-      <form class="feedback-form" id="feedbackForm">
-        <div id="feedbackMessage" style="display: none;"></div>
+      <div class="builder-content">
+        <form class="feedback-form" id="feedbackForm">
+          <div id="feedbackMessage" style="display: none;"></div>
 
-        <div>
-          <label class="form-label" for="feedbackName">Your Name</label>
-          <input type="text" id="feedbackName" class="form-input" placeholder="Your name" required />
-        </div>
-
-        <div>
-          <label class="form-label" for="feedbackFeature">Feature</label>
-          <select id="feedbackFeature" class="form-select" required>
-            <option value="">Select a feature...</option>
-            <option value="General">General</option>
-            <option value="Icon Set">Icon Set</option>
-            <option value="Single Icon">Single Icon</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="form-label" for="feedbackText">Your Feedback</label>
-          <textarea id="feedbackText" class="form-textarea" placeholder="Tell us what you think..." required></textarea>
-        </div>
-
-        <div>
-          <label class="form-label">Attach Files (optional)</label>
-          <div class="file-input-wrapper">
-            <label class="file-input-label" for="feedbackFiles">
-              Click to select files (images or videos)
-            </label>
-            <input type="file" id="feedbackFiles" class="file-input-hidden" multiple accept="image/*,video/*" />
+          <div class="form-group">
+            <label for="feedbackName">Your Name</label>
+            <input type="text" id="feedbackName" class="form-input" placeholder="Your name" required />
           </div>
-          <div class="file-list" id="fileList"></div>
-        </div>
 
-        <button type="submit" class="create-btn">Send Feedback</button>
-      </form>
+          <div class="form-group">
+            <label for="feedbackFeature">Feature</label>
+            <select id="feedbackFeature" class="form-select" required>
+              <option value="">Select a feature...</option>
+              <option value="General">General</option>
+              <option value="Icon Set">Icon Set</option>
+              <option value="Single Icon">Single Icon</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="feedbackText">Your Feedback</label>
+            <textarea id="feedbackText" class="form-textarea" placeholder="Tell us what you think..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Attach Files (optional)</label>
+            <div class="file-input-wrapper">
+              <label class="file-input-label" for="feedbackFiles">
+                Click to select files (images or videos)
+              </label>
+              <input type="file" id="feedbackFiles" class="file-input-hidden" multiple accept="image/*,video/*" />
+            </div>
+            <div class="file-list" id="fileList"></div>
+          </div>
+        </form>
+      </div>
+
+      <div class="button-section">
+        <button type="submit" class="create-btn" form="feedbackForm">Send Feedback</button>
+      </div>
     </div>
 
     <!-- Icon Set Builder View -->
