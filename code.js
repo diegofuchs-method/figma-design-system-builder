@@ -1653,7 +1653,7 @@
 `;
 
   // code.ts
-  var FEEDBACK_API_URL = "https://your-vercel-project.vercel.app/api/feedback";
+  var FEEDBACK_API_URL = "https://figma-design-system-builder-8333-flrm3ty3h.vercel.app/api/feedback";
   figma.ui.onmessage = async (msg) => {
     if (msg.type === "create-icon-set") {
       try {

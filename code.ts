@@ -7,7 +7,7 @@ import { createIconSingle, processBatchSingle } from './iconSingle';
 import __html__ from './ui.html';
 
 // Feedback API endpoint - Update this to your Vercel deployment URL
-const FEEDBACK_API_URL = 'https://your-vercel-project.vercel.app/api/feedback';
+const FEEDBACK_API_URL = 'https://figma-design-system-builder-8333-flrm3ty3h.vercel.app/api/feedback';
 
 // Listen for messages from the UI
 figma.ui.onmessage = async (msg: any) => {
