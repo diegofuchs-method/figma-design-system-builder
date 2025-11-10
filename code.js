@@ -1012,21 +1012,21 @@
 
     .file-input-label {
       display: block;
-      padding: 20px 16px;
-      background: #ffffff;
-      border: 2px dashed #BACAD0;
+      padding: 16px 12px;
+      background: #f9f9f9;
+      border: 1px dashed #BACAD0;
       border-radius: 4px;
       cursor: pointer;
       text-align: center;
       font-size: 12px;
-      color: #2A394A;
+      color: #545F67;
       transition: all 0.2s;
       line-height: 1.4;
     }
 
     .file-input-label:hover {
       border-color: #0D71C8;
-      background: #f9f9f9;
+      background: #E5F7FF;
     }
 
     .browse-link {
@@ -1039,7 +1039,8 @@
       font-size: 11px;
       color: #999999;
       display: block;
-      margin-top: 4px;
+      margin-top: 3px;
+      font-style: italic;
     }
 
     .file-input-hidden {
@@ -1048,10 +1049,7 @@
 
     .file-list {
       display: none;
-      border: 1px solid #BACAD0;
-      border-radius: 4px;
       margin-bottom: 8px;
-      background: #ffffff;
     }
 
     .file-list.has-files {
@@ -1061,27 +1059,24 @@
     .file-item {
       display: flex;
       align-items: center;
-      padding: 10px 12px;
-      border-bottom: 1px solid #BACAD0;
+      padding: 8px 0;
       gap: 8px;
       font-size: 12px;
-    }
-
-    .file-item:last-child {
-      border-bottom: none;
+      color: #545F67;
     }
 
     .file-item-icon {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       flex-shrink: 0;
       background: #E5F7FF;
-      border-radius: 3px;
+      border-radius: 2px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 9px;
       color: #0D71C8;
+      font-weight: 600;
     }
 
     .file-item-info {
@@ -1091,9 +1086,9 @@
 
     .file-item-name {
       color: #0D71C8;
-      font-weight: 500;
       word-break: break-word;
-      margin-bottom: 2px;
+      margin-bottom: 1px;
+      font-size: 12px;
     }
 
     .file-item-meta {
@@ -1104,16 +1099,17 @@
     .file-item button {
       background: none;
       border: none;
-      color: #ae2a19;
+      color: #999999;
       cursor: pointer;
-      font-size: 16px;
-      padding: 4px;
+      font-size: 14px;
+      padding: 0;
       margin: 0;
       flex-shrink: 0;
+      transition: color 0.2s;
     }
 
     .file-item button:hover {
-      opacity: 0.7;
+      color: #ae2a19;
     }
 
     #feedbackMessage {
