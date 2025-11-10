@@ -908,6 +908,14 @@
       color: #2A394A;
     }
 
+    .form-select {
+      appearance: none;
+      padding-right: 32px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%232A394A' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: calc(100% - 8px) center;
+    }
+
     .form-input:focus,
     .form-select:focus,
     .form-textarea:focus {
@@ -1061,9 +1069,9 @@
             <label for="feedbackFeature">Feature</label>
             <select id="feedbackFeature" class="form-select" required>
               <option value="">Select a feature...</option>
-              <option value="General">General</option>
               <option value="Icon Set">Icon Set</option>
               <option value="Single Icon">Single Icon</option>
+              <option value="General">General</option>
             </select>
           </div>
 
