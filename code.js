@@ -883,6 +883,7 @@
       flex-direction: column;
       gap: 8px;
       width: 100%;
+      min-height: 0;
     }
 
     .form-label {
@@ -1036,6 +1037,8 @@
       margin-top: 8px;
       font-size: 12px;
       color: #545F67;
+      max-height: 120px;
+      overflow-y: auto;
     }
 
     .file-item {
