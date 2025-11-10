@@ -1216,6 +1216,7 @@
 
     function showLandingScreen() {
       landingScreen.style.display = 'flex';
+      feedbackView.classList.remove('active');
       document.querySelectorAll('.builder-view').forEach((view) => {
         view.classList.remove('active');
       });
