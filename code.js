@@ -1033,38 +1033,46 @@
     }
 
     .file-list {
-      margin-top: 4px;
-      font-size: 11px;
-      color: #545F67;
-      max-height: 70px;
-      overflow-y: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 6px;
+      min-height: 0;
     }
 
     .file-item {
-      padding: 3px 0;
-      display: flex;
-      justify-content: space-between;
+      display: inline-flex;
       align-items: center;
       gap: 4px;
-      line-height: 1.3;
+      padding: 3px 6px;
+      background: #E5F7FF;
+      border: 1px solid #0D71C8;
+      border-radius: 3px;
+      font-size: 10px;
+      color: #0D71C8;
+      flex-shrink: 0;
     }
 
     .file-item span {
-      flex: 1;
-      min-width: 0;
+      max-width: 100px;
       word-break: break-word;
+      font-size: 10px;
     }
 
     .file-item button {
       background: none;
       border: none;
-      color: #ae2a19;
+      color: #0D71C8;
       cursor: pointer;
       font-size: 11px;
-      padding: 0 2px;
-      margin-left: 4px;
-      white-space: nowrap;
+      padding: 0;
+      margin: 0;
+      line-height: 1;
       flex-shrink: 0;
+    }
+
+    .file-item button:hover {
+      color: #ae2a19;
     }
 
     #feedbackMessage {
@@ -1178,6 +1186,7 @@
           </div>
 
           <div class="form-group">
+            <div class="file-list" id="fileList"></div>
             <label>Attach Files (optional)</label>
             <div class="file-input-wrapper">
               <label class="file-input-label" for="feedbackFiles">
@@ -1185,7 +1194,6 @@
               </label>
               <input type="file" id="feedbackFiles" class="file-input-hidden" multiple accept="image/*,video/*" />
             </div>
-            <div class="file-list" id="fileList"></div>
           </div>
         </form>
       </div>
