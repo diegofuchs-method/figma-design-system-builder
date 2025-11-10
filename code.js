@@ -828,10 +828,11 @@
     /* === Feedback Screen === */
     .landing-footer {
       flex-shrink: 0;
-      padding: 12px 16px;
+      padding: 16px;
       border-top: 1px solid #BACAD0;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
+      justify-content: flex-end;
     }
 
     .feedback-link {
@@ -1026,7 +1027,7 @@
       <!-- Landing Footer -->
       <div class="landing-footer">
         <button class="feedback-link" id="feedbackLinkBtn">
-          <svg class="feedback-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>messages bubble square heart</title><g fill="#212121" class="nc-icon-wrapper"><defs></defs><rect class="a" x=".75" y=".75" width="22.5" height="22.5" rx="1.5" ry="1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></rect><path class="a" d="M6.75 14.25l3.75 3.75 6-8.25" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path><path class="a" d="M23.25 10.5v3a4.5 4.5 0 0 1-4.5 4.5h-13.5a1.5 1.5 0 0 1-1.5-1.5V3.75A1.5 1.5 0 0 1 3.75 2.25H10.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path></g></svg>
+          <svg class="feedback-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>messages bubble square heart</title><g fill="#212121" class="nc-icon-wrapper"><defs></defs><path class="a" d="M19.5 8.25v8.25a1.5 1.5 0 0 1-1.5 1.5H9l-4.5 3v-3H4.5a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h13.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path><path class="a" d="M12 11.25l1.5-1.5a1.5 1.5 0 0 1 2.121 0 1.5 1.5 0 0 1 0 2.121l-2.121 2.121-2.121-2.121a1.5 1.5 0 0 1 0-2.121 1.5 1.5 0 0 1 2.121 0l1.5 1.5z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path></g></svg>
           Feedback
         </button>
       </div>
