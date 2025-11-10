@@ -536,6 +536,30 @@
       color: #545F67;
     }
 
+    .builder-tile.disabled {
+      cursor: not-allowed;
+      background: #f5f5f5;
+      border-color: #d0d0d0;
+      opacity: 0.6;
+    }
+
+    .builder-tile.disabled:hover {
+      background: #f5f5f5;
+      border-color: #d0d0d0;
+    }
+
+    .builder-tile.disabled .builder-icon {
+      color: #999999;
+    }
+
+    .builder-tile.disabled h3 {
+      color: #999999;
+    }
+
+    .builder-tile.disabled p {
+      color: #999999;
+    }
+
     /* === Builder Views === */
     .builder-view {
       display: none;
@@ -870,6 +894,13 @@
         <svg class="builder-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>shapes</title><g fill="#212121" class="nc-icon-wrapper"><defs></defs><rect class="a" x=".75" y=".75" width="9" height="9" rx="1" ry="1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></rect><circle class="a" cx="18.75" cy="5.25" r="4.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></circle><path class="a" d="M18.786 13.977a.886.886 0 0 0-1.572 0l-4.337 7.807a1.027 1.027 0 0 0-.007.976.905.905 0 0 0 .793.49h8.674a.905.905 0 0 0 .793-.49 1.027 1.027 0 0 0-.007-.976z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path><path class="a" d="M5.851 13.034a.778.778 0 0 0-1.2 0l-3.71 4.437a.827.827 0 0 0 0 1.058l3.708 4.437a.778.778 0 0 0 1.2 0l3.708-4.437a.827.827 0 0 0 0-1.058z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path></g></svg>
         <h3>Icon Set</h3>
         <p>Create 7 size variants with stroke weights</p>
+      </div>
+
+      <!-- Your Tool Tile (Disabled) -->
+      <div class="builder-tile disabled">
+        <svg class="builder-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>lightbulb</title><g fill="#212121" class="nc-icon-wrapper"><defs></defs><path class="a" d="M9.75 18.75h4.5M12 3a6 6 0 0 0-6 6c0 2.25.75 3.75 2.25 5.25h7.5c1.5-1.5 2.25-3 2.25-5.25a6 6 0 0 0-6-6zm0 14.25v1.5a1.5 1.5 0 0 0 1.5 1.5h-3a1.5 1.5 0 0 0 1.5-1.5v-1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path></g></svg>
+        <h3>Build Your Own</h3>
+        <p>Create and contribute custom tools</p>
       </div>
       </div>
     </div>
