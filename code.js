@@ -1012,20 +1012,34 @@
 
     .file-input-label {
       display: block;
-      padding: 6px 8px;
+      padding: 20px 16px;
       background: #ffffff;
-      border: 1px solid #BACAD0;
+      border: 2px dashed #BACAD0;
       border-radius: 4px;
       cursor: pointer;
       text-align: center;
-      font-size: 11px;
+      font-size: 12px;
       color: #2A394A;
       transition: all 0.2s;
+      line-height: 1.4;
     }
 
     .file-input-label:hover {
-      background: #E5F7FF;
       border-color: #0D71C8;
+      background: #f9f9f9;
+    }
+
+    .browse-link {
+      color: #0D71C8;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .file-size-limit {
+      font-size: 11px;
+      color: #999999;
+      display: block;
+      margin-top: 4px;
     }
 
     .file-input-hidden {
@@ -1033,46 +1047,73 @@
     }
 
     .file-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 6px;
-      min-height: 0;
+      display: none;
+      border: 1px solid #BACAD0;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      background: #ffffff;
+    }
+
+    .file-list.has-files {
+      display: block;
     }
 
     .file-item {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 4px;
-      padding: 3px 6px;
-      background: #E5F7FF;
-      border: 1px solid #0D71C8;
-      border-radius: 3px;
-      font-size: 10px;
-      color: #0D71C8;
-      flex-shrink: 0;
+      padding: 10px 12px;
+      border-bottom: 1px solid #BACAD0;
+      gap: 8px;
+      font-size: 12px;
     }
 
-    .file-item span {
-      max-width: 100px;
+    .file-item:last-child {
+      border-bottom: none;
+    }
+
+    .file-item-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      background: #E5F7FF;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #0D71C8;
+    }
+
+    .file-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-item-name {
+      color: #0D71C8;
+      font-weight: 500;
       word-break: break-word;
-      font-size: 10px;
+      margin-bottom: 2px;
+    }
+
+    .file-item-meta {
+      color: #999999;
+      font-size: 11px;
     }
 
     .file-item button {
       background: none;
       border: none;
-      color: #0D71C8;
+      color: #ae2a19;
       cursor: pointer;
-      font-size: 11px;
-      padding: 0;
+      font-size: 16px;
+      padding: 4px;
       margin: 0;
-      line-height: 1;
       flex-shrink: 0;
     }
 
     .file-item button:hover {
-      color: #ae2a19;
+      opacity: 0.7;
     }
 
     #feedbackMessage {
@@ -1186,11 +1227,12 @@
           </div>
 
           <div class="form-group">
+            <label>Attachments</label>
             <div class="file-list" id="fileList"></div>
-            <label>Attach Files (optional)</label>
             <div class="file-input-wrapper">
               <label class="file-input-label" for="feedbackFiles">
-                Click to add files (images or videos)
+                Drop files here or <span class="browse-link">click to browse</span><br/>
+                <span class="file-size-limit">Individual file size limit is 50 MB</span>
               </label>
               <input type="file" id="feedbackFiles" class="file-input-hidden" multiple accept="image/*,video/*" />
             </div>
@@ -1731,12 +1773,32 @@
 
     function updateFileList() {
       fileList.innerHTML = '';
+
+      if (selectedFiles.length === 0) {
+        fileList.classList.remove('has-files');
+        return;
+      }
+
+      fileList.classList.add('has-files');
+
       selectedFiles.forEach((file, index) => {
         const item = document.createElement('div');
         item.className = 'file-item';
+
+        // Get file extension for icon
+        const ext = file.name.split('.').pop().toUpperCase().slice(0, 3);
+
+        // Format file size
+        const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+        const sizeText = sizeInMB > 1 ? \`\${sizeInMB} MB\` : \`\${(file.size / 1024).toFixed(0)} KB\`;
+
         item.innerHTML = \`
-          <span>\${file.name}</span>
-          <button type="button" onclick="removeFile(\${index})">Remove</button>
+          <div class="file-item-icon">\${ext}</div>
+          <div class="file-item-info">
+            <div class="file-item-name">\${file.name}</div>
+            <div class="file-item-meta">\${sizeText}</div>
+          </div>
+          <button type="button" onclick="removeFile(\${index})">\u{1F5D1}</button>
         \`;
         fileList.appendChild(item);
       });
