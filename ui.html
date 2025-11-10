@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .main-header {
+      padding: 16px 16px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #BACAD0;
+    }
+
+    .main-header-logo {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    .main-header-text h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #0F1B31;
+    }
+
+    .main-header-text p {
+      margin: 2px 0 0 0;
+      font-size: 12px;
+      color: #545F67;
+    }
+
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    /* === Landing Screen === */
+    .landing-screen {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .landing-header {
+      display: none;
+    }
+
+    .landing-header-logo {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    .landing-header-text h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #0F1B31;
+    }
+
+    .landing-header-text p {
+      margin: 2px 0 0 0;
+      font-size: 12px;
+      color: #545F67;
+    }
+
+    .builders-grid {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-content: start;
+      flex: 1;
+    }
+
+    .builder-tile {
+      background: #ffffff;
+      border: 2px solid #BACAD0;
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: inherit;
+      aspect-ratio: 1;
+    }
+
+    .builder-tile:hover {
+      background: #E5F7FF;
+      border-color: #0D71C8;
+    }
+
+    .builder-tile:active {
+      background: #E5F7FF;
+      border-color: #0D71C8;
+    }
+
+    .builder-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
+      color: #0D71C8;
+    }
+
+    .builder-tile h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #0F1B31;
+    }
+
+    .builder-tile p {
+      margin: 4px 0 0 0;
+      font-size: 11px;
+      color: #545F67;
+    }
+
+    /* === Builder Views === */
+    .builder-view {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .builder-view.active {
+      display: flex;
+    }
+
+    .builder-header {
+      flex-shrink: 0;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      position: relative;
+    }
+
+    .back-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .back-button svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .back-button:hover {
+      background: #E5F7FF;
+    }
+
+    .back-button:hover svg circle {
+      stroke: #0D71C8;
+    }
+
+    .back-button:hover svg path {
+      stroke: #0D71C8;
+    }
+
+    .builder-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #0F1B31;
+      text-align: center;
+    }
+
+    .builder-content {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Icon Set Builder Styles */
+    .mode-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      background: #f5f5f5;
+      padding: 4px;
+      border-radius: 4px;
+      width: 100%;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 6px 12px;
+      margin: 0;
+      border: none;
+      background: transparent;
+      color: #2A394A;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+      font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+    }
+
+    .mode-btn.active {
+      background: #ffffff;
+      color: #0D71C8;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .mode-btn:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .steps-container {
+      background: #E5F7FF;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .steps {
+      margin-bottom: 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+
+    .step:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #0D71C8;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .step-text {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #2A394A;
+      padding-top: 3px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      position: relative;
+      min-height: 80px;
+    }
+
+    label {
+      position: absolute;
+      top: -6px;
+      left: 6px;
+      background: #ffffff;
+      padding: 0 4px;
+      font-weight: 600;
+      font-size: 12px;
+      color: #0F1B31;
+      z-index: 10;
+    }
+
+    input[type='text'],
+    input[type='search'] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #BACAD0;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+      color: #2A394A;
+    }
+
+    input[type='text']:focus,
+    input[type='search']:focus {
+      outline: none;
+      border-color: #0D71C8;
+    }
+
+    input[type='search']:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: #f5f5f5;
+    }
+
+    .form-group.batch-mode label {
+      opacity: 0.5;
+    }
+
+    .info-text {
+      font-size: 12px;
+      color: #2A394A;
+      margin-top: 8px;
+      margin-left: 8px;
+    }
+
+    #batchModeInfo {
+      background: #E5F7FF;
+      border: 1px solid #0D71C8;
+      color: #0D71C8;
+      padding: 8px 12px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 0;
+    }
+
+    .info-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .message {
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
+
+    .message.success {
+      background: #e6f7ed;
+      color: #0a6c2c;
+      border: 1px solid #c6f5d9;
+    }
+
+    .message.error {
+      background: #fde6e6;
+      color: #ae2a19;
+      border: 1px solid #f8d7da;
+    }
+
+    .button-section {
+      flex-shrink: 0;
+      padding: 12px 16px;
+      border-top: 1px solid #BACAD0;
+    }
+
+    button.create-btn {
+      width: 100%;
+      padding: 10px 16px;
+      background: #0D71C8;
+      color: #ffffff;
+      border: none;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button.create-btn:hover {
+      background: #064499;
+    }
+
+    button.create-btn:active {
+      background: #043d7a;
+    }
+
+    button.create-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    /* Icon Single Builder Styles */
+    .single-icon-steps {
+      background: #E5F7FF;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .single-icon-steps .steps {
+      margin: 0;
+    }
+
+    .single-icon-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+    }
+
+    /* === Feedback Screen === */
+    .landing-footer {
+      flex-shrink: 0;
+      padding: 12px 16px;
+      border-top: 1px solid #BACAD0;
+      display: flex;
+      align-items: center;
+    }
+
+    .feedback-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #0D71C8;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .feedback-link:hover {
+      background: #E5F7FF;
+    }
+
+    .feedback-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .feedback-view {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .feedback-view.active {
+      display: flex;
+    }
+
+    .feedback-form {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      font-size: 12px;
+      color: #0F1B31;
+      margin-bottom: 4px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #BACAD0;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+      color: #2A394A;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: #0D71C8;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .file-input-label {
+      display: block;
+      padding: 8px 12px;
+      background: #f5f5f5;
+      border: 1px solid #BACAD0;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 12px;
+      color: #2A394A;
+      transition: all 0.2s;
+    }
+
+    .file-input-label:hover {
+      background: #ececec;
+      border-color: #0D71C8;
+    }
+
+    .file-input-hidden {
+      display: none;
+    }
+
+    .file-list {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #545F67;
+    }
+
+    .file-item {
+      padding: 4px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .file-item button {
+      background: none;
+      border: none;
+      color: #ae2a19;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 0;
+    }
+
+    #feedbackMessage {
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
+
+    #feedbackMessage.success {
+      background: #e6f7ed;
+      color: #0a6c2c;
+      border: 1px solid #c6f5d9;
+    }
+
+    #feedbackMessage.error {
+      background: #fde6e6;
+      color: #ae2a19;
+      border: 1px solid #f8d7da;
+    }
+  </style>
+</head>
+<body>
+  <!-- Main Header (always visible) -->
+  <div class="main-header">
+    <svg class="main-header-logo" viewBox="0 0 1962 1962" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0)">
+        <rect width="1961.71" height="1961.71" rx="240" fill="#022266"/>
+        <path d="M1454.26 896.365V1136.08C1454.26 1153.01 1463.49 1164.99 1480.53 1164.27H1525.26V1291.18H1382.56C1324.35 1291.18 1298.08 1266.5 1298.08 1208.69V924.553C1298.08 854.733 1285.29 801.864 1213.59 801.864C1137.61 801.864 1083.65 866.024 1066.61 942.884C1059.49 966.875 1056.65 992.247 1056.65 1021.15V1291.18H900.441V924.553C900.441 858.267 891.934 801.864 818.095 801.864C739.975 801.864 688.877 866.024 669.695 944.292C663.301 968.283 659.047 993.655 659.047 1021.15V1291.9H509.952V833.613C509.952 815.281 497.886 805.398 480.844 805.398H431.859V678.485H574.561C629.217 678.485 659.047 701.759 659.047 745.461V763.793C659.047 777.183 654.794 791.29 654.794 791.29H656.934C686.042 727.82 759.881 664.378 857.155 664.378C950.872 664.378 1011.23 706.673 1038.19 791.29H1040.33C1073 720.808 1153.23 663.688 1251.2 663.688C1380.42 663.688 1454.26 734.915 1454.26 896.365Z" fill="white"/>
+      </g>
+      <defs>
+        <clipPath id="clip0">
+          <rect width="1961.71" height="1961.71" rx="240" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+    <div class="main-header-text">
+      <h1>Design System Builder</h1>
+      <p>Create design system components</p>
+    </div>
+  </div>
+
+  <!-- Content Wrapper -->
+  <div class="content-wrapper">
+    <!-- Landing Screen -->
+    <div class="landing-screen" id="landingScreen">
+      <div class="builders-grid">
+      <!-- Single Icon Builder Tile -->
+      <div class="builder-tile" data-builder="iconSingle">
+        <svg class="builder-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>shape triangle circle</title><g fill="#212121" class="nc-icon-wrapper"><defs></defs><circle class="a" cx="16.327" cy="15.462" r="6.923" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></circle><path class="a" d="M9.245 2.011a.59.59 0 0 0-1.114 0L.881 14.5c-.307.528-.056.961.558.961h14.5c.614 0 .865-.433.558-.961z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path></g></svg>
+        <h3>Single Icon</h3>
+        <p>Create a single 24px component</p>
+      </div>
+
+      <!-- Icon Set Builder Tile -->
+      <div class="builder-tile" data-builder="iconSet">
+        <svg class="builder-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>shapes</title><g fill="#212121" class="nc-icon-wrapper"><defs></defs><rect class="a" x=".75" y=".75" width="9" height="9" rx="1" ry="1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></rect><circle class="a" cx="18.75" cy="5.25" r="4.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></circle><path class="a" d="M18.786 13.977a.886.886 0 0 0-1.572 0l-4.337 7.807a1.027 1.027 0 0 0-.007.976.905.905 0 0 0 .793.49h8.674a.905.905 0 0 0 .793-.49 1.027 1.027 0 0 0-.007-.976z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path><path class="a" d="M5.851 13.034a.778.778 0 0 0-1.2 0l-3.71 4.437a.827.827 0 0 0 0 1.058l3.708 4.437a.778.778 0 0 0 1.2 0l3.708-4.437a.827.827 0 0 0 0-1.058z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path></g></svg>
+        <h3>Icon Set</h3>
+        <p>Create 7 size variants with stroke weights</p>
+      </div>
+      </div>
+
+      <!-- Landing Footer -->
+      <div class="landing-footer">
+        <button class="feedback-link" id="feedbackLinkBtn">
+          <svg class="feedback-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>messages bubble square heart</title><g fill="#212121" class="nc-icon-wrapper"><defs></defs><rect class="a" x=".75" y=".75" width="22.5" height="22.5" rx="1.5" ry="1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></rect><path class="a" d="M6.75 14.25l3.75 3.75 6-8.25" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path><path class="a" d="M23.25 10.5v3a4.5 4.5 0 0 1-4.5 4.5h-13.5a1.5 1.5 0 0 1-1.5-1.5V3.75A1.5 1.5 0 0 1 3.75 2.25H10.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path></g></svg>
+          Feedback
+        </button>
+      </div>
+    </div>
+
+    <!-- Feedback View -->
+    <div class="feedback-view" id="feedbackView">
+      <div class="builder-header">
+        <button class="back-button" id="feedbackBackBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>navigation left circle 2</title><g fill="#212121" class="nc-icon-wrapper"><defs></defs><circle class="a" cx="12" cy="11.998" r="11.25" fill="none" stroke="#545F67" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></circle><path class="a" d="M10.5 15.748l-5.25-4.5 5.25-4.5V9h3a4.5 4.5 0 0 1 4.5 4.5v3a3 3 0 0 0-3-3h-4.5z" fill="none" stroke="#545F67" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path></g></svg>
+        </button>
+        <h2 class="builder-title">Feedback</h2>
+      </div>
+
+      <form class="feedback-form" id="feedbackForm">
+        <div id="feedbackMessage" style="display: none;"></div>
+
+        <div>
+          <label class="form-label" for="feedbackName">Your Name</label>
+          <input type="text" id="feedbackName" class="form-input" placeholder="Your name" required />
+        </div>
+
+        <div>
+          <label class="form-label" for="feedbackFeature">Feature</label>
+          <select id="feedbackFeature" class="form-select" required>
+            <option value="">Select a feature...</option>
+            <option value="General">General</option>
+            <option value="Icon Set">Icon Set</option>
+            <option value="Single Icon">Single Icon</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label" for="feedbackText">Your Feedback</label>
+          <textarea id="feedbackText" class="form-textarea" placeholder="Tell us what you think..." required></textarea>
+        </div>
+
+        <div>
+          <label class="form-label">Attach Files (optional)</label>
+          <div class="file-input-wrapper">
+            <label class="file-input-label" for="feedbackFiles">
+              Click to select files (images or videos)
+            </label>
+            <input type="file" id="feedbackFiles" class="file-input-hidden" multiple accept="image/*,video/*" />
+          </div>
+          <div class="file-list" id="fileList"></div>
+        </div>
+
+        <button type="submit" class="create-btn">Send Feedback</button>
+      </form>
+    </div>
+
+    <!-- Icon Set Builder View -->
+    <div class="builder-view" id="iconSetView">
+    <div class="builder-header">
+      <button class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>navigation left circle 2</title><g fill="#212121" class="nc-icon-wrapper"><defs></defs><circle class="a" cx="12" cy="11.998" r="11.25" fill="none" stroke="#545F67" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></circle><path class="a" d="M10.5 15.748l-5.25-4.5 5.25-4.5V9h3a4.5 4.5 0 0 1 4.5 4.5v3a3 3 0 0 0-3-3h-4.5z" fill="none" stroke="#545F67" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path></g></svg>
+      </button>
+      <h2 class="builder-title">Icon Set</h2>
+    </div>
+
+    <div class="builder-content">
+      <div class="mode-selector">
+        <button type="button" class="mode-btn active" id="singleModeBtn">Single</button>
+        <button type="button" class="mode-btn" id="batchModeBtn">Batch</button>
+      </div>
+
+      <div class="steps-container">
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-text">Select a frame containing your icon</div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-text" id="step2Text">Enter a name for your component set</div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-text">Click "Create Icon Set" to generate 7 size variants with optimized stroke weights</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="iconSetMessage"></div>
+
+      <div class="form-group">
+        <label for="iconSetName">Icon name</label>
+        <input
+          id="iconSetName"
+          type="search"
+          placeholder="e.g., chevron-right"
+        />
+        <div class="info-text" id="singleModeInfo">Name for your component set</div>
+        <div class="info-text" id="batchModeInfo" style="display: none;">
+          <svg class="info-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="9" r="0.5" fill="currentColor"/>
+          </svg>
+          <span>Frame names will be used as icon names</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-section">
+      <button class="create-btn" id="iconSetCreateBtn">Create icon set</button>
+    </div>
+  </div>
+
+  <!-- Icon Single Builder View -->
+  <div class="builder-view" id="iconSingleView">
+    <div class="builder-header">
+      <button class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>navigation left circle 2</title><g fill="#212121" class="nc-icon-wrapper"><defs></defs><circle class="a" cx="12" cy="11.998" r="11.25" fill="none" stroke="#545F67" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></circle><path class="a" d="M10.5 15.748l-5.25-4.5 5.25-4.5V9h3a4.5 4.5 0 0 1 4.5 4.5v3a3 3 0 0 0-3-3h-4.5z" fill="none" stroke="#545F67" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px"></path></g></svg>
+      </button>
+      <h2 class="builder-title">Single Icon</h2>
+    </div>
+
+    <div class="builder-content">
+      <div class="mode-selector">
+        <button type="button" class="mode-btn active" id="singleIconModeBtn">Single</button>
+        <button type="button" class="mode-btn" id="batchIconModeBtn">Batch</button>
+      </div>
+
+      <div class="single-icon-steps">
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-text">Select a frame containing your icon</div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-text" id="singleIconStep2">Enter a name for your component</div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-text">Click "Create Icon" to generate a 24px component with 2px stroke weight</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="iconSingleMessage"></div>
+
+      <div class="form-group">
+        <label for="iconSingleName">Icon name</label>
+        <input
+          id="iconSingleName"
+          type="search"
+          placeholder="e.g., chevron-right"
+        />
+        <div class="info-text" id="singleIconInfo">Name for your component</div>
+        <div class="info-text" id="batchIconInfo" style="display: none;">
+          <svg class="info-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="9" r="0.5" fill="currentColor"/>
+          </svg>
+          <span>Frame names will be used as icon names</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-section">
+      <button class="create-btn" id="iconSingleCreateBtn">Create icon</button>
+    </div>
+  </div>
+
+  <script>
+    // ===== Landing Screen =====
+    const landingScreen = document.getElementById('landingScreen');
+    const builderTiles = document.querySelectorAll('.builder-tile');
+    const backButtons = document.querySelectorAll('.back-button');
+
+    builderTiles.forEach((tile) => {
+      tile.addEventListener('click', () => {
+        const builder = tile.dataset.builder;
+        showBuilder(builder);
+      });
+    });
+
+    backButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        showLandingScreen();
+      });
+    });
+
+    function showLandingScreen() {
+      landingScreen.style.display = 'flex';
+      document.querySelectorAll('.builder-view').forEach((view) => {
+        view.classList.remove('active');
+      });
+    }
+
+    function showBuilder(builderName) {
+      landingScreen.style.display = 'none';
+      document.querySelectorAll('.builder-view').forEach((view) => {
+        view.classList.remove('active');
+      });
+      const builderView = document.getElementById(builderName + 'View');
+      if (builderView) {
+        builderView.classList.add('active');
+      }
+    }
+
+    // ===== Icon Set Builder =====
+    const iconSetNameInput = document.getElementById('iconSetName');
+    const iconSetCreateBtn = document.getElementById('iconSetCreateBtn');
+    const iconSetMessageDiv = document.getElementById('iconSetMessage');
+    const formGroup = document.querySelector('.form-group');
+    const singleModeBtn = document.getElementById('singleModeBtn');
+    const batchModeBtn = document.getElementById('batchModeBtn');
+    const step2Text = document.querySelector('.steps .step:nth-child(2) .step-text');
+    const singleModeInfo = document.getElementById('singleModeInfo');
+    const batchModeInfo = document.getElementById('batchModeInfo');
+
+    let iconSetMode = 'single';
+
+    // Handle mode toggle
+    singleModeBtn.addEventListener('click', () => {
+      iconSetMode = 'single';
+      singleModeBtn.classList.add('active');
+      batchModeBtn.classList.remove('active');
+      iconSetNameInput.disabled = false;
+      formGroup.classList.remove('batch-mode');
+      singleModeInfo.style.display = 'block';
+      batchModeInfo.style.display = 'none';
+      iconSetCreateBtn.textContent = 'Create icon set';
+      step2Text.textContent = 'Enter a name for your component set';
+      iconSetMessageDiv.style.display = 'none';
+      formGroup.classList.remove('has-message-above');
+    });
+
+    batchModeBtn.addEventListener('click', () => {
+      iconSetMode = 'batch';
+      batchModeBtn.classList.add('active');
+      singleModeBtn.classList.remove('active');
+      iconSetNameInput.disabled = true;
+      formGroup.classList.add('batch-mode');
+      singleModeInfo.style.display = 'none';
+      batchModeInfo.style.display = 'flex';
+      iconSetCreateBtn.textContent = 'Create icon sets';
+      step2Text.textContent = 'Name each selected frame as desired';
+      iconSetMessageDiv.style.display = 'none';
+      formGroup.classList.remove('has-message-above');
+    });
+
+    // Handle search input clear button
+    iconSetNameInput.addEventListener('search', () => {
+      if (iconSetNameInput.value === '') {
+        iconSetMessageDiv.style.display = 'none';
+        formGroup.classList.remove('has-message-above');
+      }
+    });
+
+    // Allow Enter key
+    iconSetNameInput.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        iconSetCreateBtn.click();
+      }
+    });
+
+    iconSetCreateBtn.addEventListener('click', () => {
+      iconSetMessageDiv.style.display = 'none';
+
+      if (iconSetMode === 'single') {
+        const iconName = iconSetNameInput.value.trim();
+
+        if (!iconName) {
+          showMessage(iconSetMessageDiv, 'Please enter an icon name', 'error');
+          return;
+        }
+
+        const validName = /^[a-zA-Z0-9_ -]+$/;
+        if (!validName.test(iconName)) {
+          showMessage(
+            iconSetMessageDiv,
+            'Only letters, numbers, spaces, hyphens, and underscores supported',
+            'error'
+          );
+          return;
+        }
+
+        iconSetCreateBtn.disabled = true;
+        iconSetCreateBtn.textContent = 'Creating...';
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: 'create-icon-set',
+              mode: 'single',
+              iconName: iconName
+            }
+          },
+          '*'
+        );
+      } else if (iconSetMode === 'batch') {
+        iconSetCreateBtn.disabled = true;
+        iconSetCreateBtn.textContent = 'Creating...';
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: 'create-icon-set',
+              mode: 'batch'
+            }
+          },
+          '*'
+        );
+      }
+    });
+
+    // ===== Icon Single Builder =====
+    const iconSingleNameInput = document.getElementById('iconSingleName');
+    const iconSingleCreateBtn = document.getElementById('iconSingleCreateBtn');
+    const iconSingleMessageDiv = document.getElementById('iconSingleMessage');
+    const singleIconModeBtn = document.getElementById('singleIconModeBtn');
+    const batchIconModeBtn = document.getElementById('batchIconModeBtn');
+    const singleIconStep2 = document.getElementById('singleIconStep2');
+    const singleIconInfo = document.getElementById('singleIconInfo');
+    const batchIconInfo = document.getElementById('batchIconInfo');
+    const singleIconFormGroup = document.querySelector('#iconSingleView .form-group');
+
+    let singleIconMode = 'single';
+
+    // Handle mode toggle for Single Icon
+    singleIconModeBtn.addEventListener('click', () => {
+      singleIconMode = 'single';
+      singleIconModeBtn.classList.add('active');
+      batchIconModeBtn.classList.remove('active');
+      iconSingleNameInput.disabled = false;
+      singleIconFormGroup.classList.remove('batch-mode');
+      singleIconInfo.style.display = 'block';
+      batchIconInfo.style.display = 'none';
+      iconSingleCreateBtn.textContent = 'Create icon';
+      singleIconStep2.textContent = 'Enter a name for your component';
+      iconSingleMessageDiv.style.display = 'none';
+      singleIconFormGroup.classList.remove('has-message-above');
+    });
+
+    batchIconModeBtn.addEventListener('click', () => {
+      singleIconMode = 'batch';
+      batchIconModeBtn.classList.add('active');
+      singleIconModeBtn.classList.remove('active');
+      iconSingleNameInput.disabled = true;
+      singleIconFormGroup.classList.add('batch-mode');
+      singleIconInfo.style.display = 'none';
+      batchIconInfo.style.display = 'flex';
+      iconSingleCreateBtn.textContent = 'Create icons';
+      singleIconStep2.textContent = 'Name each selected frame as desired';
+      iconSingleMessageDiv.style.display = 'none';
+      singleIconFormGroup.classList.remove('has-message-above');
+    });
+
+    // Handle search input clear button
+    iconSingleNameInput.addEventListener('search', () => {
+      if (iconSingleNameInput.value === '') {
+        iconSingleMessageDiv.style.display = 'none';
+        singleIconFormGroup.classList.remove('has-message-above');
+      }
+    });
+
+    iconSingleNameInput.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        iconSingleCreateBtn.click();
+      }
+    });
+
+    iconSingleCreateBtn.addEventListener('click', () => {
+      iconSingleMessageDiv.style.display = 'none';
+
+      if (singleIconMode === 'single') {
+        const iconName = iconSingleNameInput.value.trim();
+
+        if (!iconName) {
+          showMessage(iconSingleMessageDiv, 'Please enter an icon name', 'error');
+          return;
+        }
+
+        const validName = /^[a-zA-Z0-9_ -]+$/;
+        if (!validName.test(iconName)) {
+          showMessage(
+            iconSingleMessageDiv,
+            'Only letters, numbers, spaces, hyphens, and underscores supported',
+            'error'
+          );
+          return;
+        }
+
+        iconSingleCreateBtn.disabled = true;
+        iconSingleCreateBtn.textContent = 'Creating...';
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: 'create-icon-single',
+              mode: 'single',
+              iconName: iconName
+            }
+          },
+          '*'
+        );
+      } else if (singleIconMode === 'batch') {
+        iconSingleCreateBtn.disabled = true;
+        iconSingleCreateBtn.textContent = 'Creating...';
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: 'create-icon-single',
+              mode: 'batch'
+            }
+          },
+          '*'
+        );
+      }
+    });
+
+    // ===== Message Handling =====
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+
+      if (msg && msg.type === 'success') {
+        if (msg.from === 'iconSet' || !msg.from) {
+          iconSetCreateBtn.disabled = false;
+          iconSetCreateBtn.textContent = 'Create icon set';
+          showMessage(iconSetMessageDiv, msg.message, 'success');
+          iconSetNameInput.value = '';
+        }
+        if (msg.from === 'iconSingle' || !msg.from) {
+          iconSingleCreateBtn.disabled = false;
+          const btnText = singleIconMode === 'batch' ? 'Create icons' : 'Create icon';
+          iconSingleCreateBtn.textContent = btnText;
+          showMessage(iconSingleMessageDiv, msg.message, 'success');
+          iconSingleNameInput.value = '';
+        }
+      }
+
+      if (msg && msg.type === 'error') {
+        if (msg.from === 'iconSet' || !msg.from) {
+          iconSetCreateBtn.disabled = false;
+          iconSetCreateBtn.textContent = 'Create icon set';
+          showMessage(iconSetMessageDiv, msg.message, 'error');
+        }
+        if (msg.from === 'iconSingle' || !msg.from) {
+          iconSingleCreateBtn.disabled = false;
+          const btnText = singleIconMode === 'batch' ? 'Create icons' : 'Create icon';
+          iconSingleCreateBtn.textContent = btnText;
+          showMessage(iconSingleMessageDiv, msg.message, 'error');
+        }
+      }
+
+      if (msg && msg.type === 'selectionchange') {
+        if (iconSetMessageDiv.style.display === 'block') {
+          iconSetMessageDiv.style.display = 'none';
+          formGroup.classList.remove('has-message-above');
+        }
+        if (iconSingleMessageDiv.style.display === 'block') {
+          iconSingleMessageDiv.style.display = 'none';
+        }
+      }
+
+      if (msg && msg.type === 'feedback-success') {
+        showFeedbackMessage(msg.message, 'success');
+        document.getElementById('feedbackForm').reset();
+        document.getElementById('fileList').innerHTML = '';
+        selectedFiles = [];
+      }
+
+      if (msg && msg.type === 'feedback-error') {
+        showFeedbackMessage(msg.message, 'error');
+      }
+    };
+
+    function showMessage(messageDiv, text, type) {
+      messageDiv.textContent = text;
+      messageDiv.className = `message ${type}`;
+      messageDiv.style.display = 'block';
+
+      if (messageDiv === iconSetMessageDiv) {
+        formGroup.classList.add('has-message-above');
+      }
+
+      if (type === 'success') {
+        setTimeout(() => {
+          messageDiv.style.display = 'none';
+          if (messageDiv === iconSetMessageDiv) {
+            formGroup.classList.remove('has-message-above');
+          }
+        }, 3000);
+      }
+    }
+
+    // ===== Feedback Form =====
+    const feedbackLinkBtn = document.getElementById('feedbackLinkBtn');
+    const feedbackBackBtn = document.getElementById('feedbackBackBtn');
+    const feedbackView = document.getElementById('feedbackView');
+    const feedbackForm = document.getElementById('feedbackForm');
+    const feedbackName = document.getElementById('feedbackName');
+    const feedbackFeature = document.getElementById('feedbackFeature');
+    const feedbackText = document.getElementById('feedbackText');
+    const feedbackFiles = document.getElementById('feedbackFiles');
+    const fileList = document.getElementById('fileList');
+    const feedbackMessage = document.getElementById('feedbackMessage');
+
+    let selectedFiles = [];
+
+    feedbackLinkBtn.addEventListener('click', () => {
+      feedbackView.classList.add('active');
+      landingScreen.style.display = 'none';
+      document.querySelectorAll('.builder-view').forEach((view) => {
+        view.classList.remove('active');
+      });
+    });
+
+    feedbackBackBtn.addEventListener('click', () => {
+      showLandingScreen();
+    });
+
+    feedbackFiles.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files || []);
+      selectedFiles = files;
+      updateFileList();
+    });
+
+    function updateFileList() {
+      fileList.innerHTML = '';
+      selectedFiles.forEach((file, index) => {
+        const item = document.createElement('div');
+        item.className = 'file-item';
+        item.innerHTML = `
+          <span>${file.name}</span>
+          <button type="button" onclick="removeFile(${index})">Remove</button>
+        `;
+        fileList.appendChild(item);
+      });
+    }
+
+    function removeFile(index) {
+      selectedFiles.splice(index, 1);
+      feedbackFiles.value = '';
+      updateFileList();
+    }
+
+    feedbackForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      feedbackMessage.style.display = 'none';
+
+      const name = feedbackName.value.trim();
+      const feature = feedbackFeature.value;
+      const feedback = feedbackText.value.trim();
+
+      if (!name || !feature || !feedback) {
+        showFeedbackMessage('Please fill in all required fields', 'error');
+        return;
+      }
+
+      // Convert files to base64
+      const filesBase64 = [];
+      for (const file of selectedFiles) {
+        try {
+          const base64 = await fileToBase64(file);
+          filesBase64.push({
+            name: file.name,
+            type: file.type,
+            content: base64.split(',')[1] // Remove data:image/png;base64, prefix
+          });
+        } catch (error) {
+          showFeedbackMessage('Error reading file: ' + file.name, 'error');
+          return;
+        }
+      }
+
+      // Send feedback to backend
+      parent.postMessage(
+        {
+          pluginMessage: {
+            type: 'send-feedback',
+            userName: name,
+            feature: feature,
+            feedback: feedback,
+            filesBase64: filesBase64
+          }
+        },
+        '*'
+      );
+
+      // Disable button and show loading state
+      const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      // Re-enable after 2 seconds (in case of error)
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Feedback';
+      }, 2000);
+    });
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function showFeedbackMessage(text, type) {
+      feedbackMessage.textContent = text;
+      feedbackMessage.className = type;
+      feedbackMessage.style.display = 'block';
+
+      if (type === 'success') {
+        setTimeout(() => {
+          feedbackMessage.style.display = 'none';
+        }, 3000);
+      }
+    }
+  </script>
+  </div>
+</body>
+</html>
