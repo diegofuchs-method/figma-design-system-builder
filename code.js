@@ -688,9 +688,12 @@
     }
 
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       position: relative;
-      min-height: 80px;
+    }
+
+    .form-group textarea {
+      min-height: 60px;
     }
 
     label {
@@ -882,7 +885,7 @@
       padding: 12px 16px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 8px;
     }
 
     .form-label {
