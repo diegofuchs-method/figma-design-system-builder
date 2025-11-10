@@ -1180,17 +1180,6 @@
             <label for="feedbackText">Your Feedback</label>
             <textarea id="feedbackText" class="form-textarea" placeholder="Tell us what you think..." required></textarea>
           </div>
-
-          <div class="form-group">
-            <label>Attach Files (optional)</label>
-            <div class="file-input-wrapper">
-              <label class="file-input-label" for="feedbackFiles">
-                Click to select files (images or videos)
-              </label>
-              <input type="file" id="feedbackFiles" class="file-input-hidden" multiple accept="image/*,video/*" />
-            </div>
-            <div class="file-list" id="fileList"></div>
-          </div>
         </form>
       </div>
 
@@ -1649,11 +1638,7 @@
     const feedbackName = document.getElementById('feedbackName');
     const feedbackFeature = document.getElementById('feedbackFeature');
     const feedbackText = document.getElementById('feedbackText');
-    const feedbackFiles = document.getElementById('feedbackFiles');
-    const fileList = document.getElementById('fileList');
     const feedbackMessage = document.getElementById('feedbackMessage');
-
-    let selectedFiles = [];
 
     feedbackLinkBtn.addEventListener('click', () => {
       feedbackView.classList.add('active');
@@ -1671,8 +1656,6 @@
       const dropdownValue = document.getElementById('dropdownValue');
       dropdownValue.textContent = 'Select a feature...';
       dropdownValue.classList.add('placeholder');
-      selectedFiles = [];
-      document.getElementById('fileList').innerHTML = '';
       document.getElementById('feedbackMessage').style.display = 'none';
 
       // Reset dropdown styling
@@ -1719,32 +1702,7 @@
       }
     });
 
-    feedbackFiles.addEventListener('change', (e) => {
-      const files = Array.from(e.target.files || []);
-      selectedFiles = files;
-      updateFileList();
-    });
-
-    function updateFileList() {
-      fileList.innerHTML = '';
-      selectedFiles.forEach((file, index) => {
-        const item = document.createElement('div');
-        item.className = 'file-item';
-        item.innerHTML = \`
-          <span>\${file.name}</span>
-          <button type="button" onclick="removeFile(\${index})">Remove</button>
-        \`;
-        fileList.appendChild(item);
-      });
-    }
-
-    function removeFile(index) {
-      selectedFiles.splice(index, 1);
-      feedbackFiles.value = '';
-      updateFileList();
-    }
-
-    feedbackForm.addEventListener('submit', async (e) => {
+    feedbackForm.addEventListener('submit', (e) => {
       e.preventDefault();
       feedbackMessage.style.display = 'none';
 
@@ -1757,22 +1715,6 @@
         return;
       }
 
-      // Convert files to base64
-      const filesBase64 = [];
-      for (const file of selectedFiles) {
-        try {
-          const base64 = await fileToBase64(file);
-          filesBase64.push({
-            name: file.name,
-            type: file.type,
-            content: base64.split(',')[1] // Remove data:image/png;base64, prefix
-          });
-        } catch (error) {
-          showFeedbackMessage('Error reading file: ' + file.name, 'error');
-          return;
-        }
-      }
-
       // Send feedback to backend
       parent.postMessage(
         {
@@ -1780,8 +1722,7 @@
             type: 'send-feedback',
             userName: name,
             feature: feature,
-            feedback: feedback,
-            filesBase64: filesBase64
+            feedback: feedback
           }
         },
         '*'
@@ -1798,15 +1739,6 @@
         submitBtn.textContent = 'Send Feedback';
       }, 2000);
     });
-
-    function fileToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
 
     function showFeedbackMessage(text, type) {
       feedbackMessage.textContent = text;
