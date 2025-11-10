@@ -908,6 +908,12 @@
       color: #2A394A;
     }
 
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      font-size: 12px;
+      color: #999999;
+    }
+
     .custom-dropdown {
       position: relative;
     }
@@ -1130,7 +1136,7 @@
           <div id="feedbackMessage" style="display: none;"></div>
 
           <div class="form-group">
-            <label for="feedbackName">Your Name</label>
+            <label for="feedbackName">User name</label>
             <input type="text" id="feedbackName" class="form-input" placeholder="Your name" required />
           </div>
 
@@ -1640,6 +1646,20 @@
     });
 
     feedbackBackBtn.addEventListener('click', () => {
+      // Clear feedback form fields
+      document.getElementById('feedbackName').value = '';
+      document.getElementById('feedbackText').value = '';
+      document.getElementById('feedbackFeature').value = 'Icon Set';
+      document.getElementById('dropdownValue').textContent = 'Icon Set';
+      selectedFiles = [];
+      document.getElementById('fileList').innerHTML = '';
+      document.getElementById('feedbackMessage').style.display = 'none';
+
+      // Reset dropdown styling
+      const dropdownOptions = document.querySelectorAll('#feedbackDropdown .dropdown-option');
+      dropdownOptions.forEach((opt) => opt.classList.remove('selected'));
+      dropdownOptions[0].classList.add('selected');
+
       showLandingScreen();
     });
 
