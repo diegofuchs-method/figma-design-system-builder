@@ -831,16 +831,6 @@
       flex: 1;
     }
 
-    /* === Feedback Screen === */
-    .landing-footer {
-      flex-shrink: 0;
-      padding: 8px 12px;
-      border-top: 1px solid #BACAD0;
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-end;
-    }
-
   </style>
 </head>
 <body>
@@ -882,9 +872,6 @@
         <p>Create 7 size variants with stroke weights</p>
       </div>
       </div>
-
-      <!-- Landing Footer -->
-      <div class="landing-footer"></div>
     </div>
 
     <!-- Icon Set Builder View -->
