@@ -862,8 +862,8 @@
     }
 
     .feedback-icon {
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       flex-shrink: 0;
     }
 
@@ -879,13 +879,10 @@
     }
 
     .feedback-form {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      padding: 12px 16px;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      width: 100%;
     }
 
     .form-label {
