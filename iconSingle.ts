@@ -129,7 +129,7 @@ export async function createIconSingle(
     const iconClone = flattenedVector.clone();
 
     // Create icon component (this creates a frame with the icon inside)
-    const component = createIconComponent(
+    const component = await createIconComponent(
       iconClone,
       ICON_SIZE,
       STROKE_WEIGHT,

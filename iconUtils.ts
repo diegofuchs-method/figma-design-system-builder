@@ -23,15 +23,33 @@ export function applyStrokeWeightRecursive(node: BaseNode, weight: number): void
 }
 
 /**
+ * Finds a variable by collection name and variable name
+ */
+async function getVariableId(collectionName: string, variableName: string): Promise<string | null> {
+  const collections = await figma.variables.getLocalVariablesAsync();
+
+  for (const variable of collections) {
+    if (variable.name === variableName && variable.variableCollectionId) {
+      const collection = await figma.variables.getVariableCollectionById(variable.variableCollectionId);
+      if (collection && collection.name === collectionName) {
+        return variable.id;
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
  * Creates a component frame for an icon at a specific size with stroke weight
  */
-export function createIconComponent(
+export async function createIconComponent(
   iconClone: BaseNode,
   size: number,
   strokeWeight: number,
   originalWidth: number,
   originalHeight: number
-): ComponentNode {
+): Promise<ComponentNode> {
   // Calculate scale factor to reach target size from original dimensions
   const maxOriginalDim = Math.max(originalWidth, originalHeight);
   const scaleFactor = size / maxOriginalDim;
@@ -80,6 +98,18 @@ export function createIconComponent(
 
   // Create component from the frame
   const component = figma.createComponentFromNode(frame);
+
+  // Bind width and height to the "Icon size" variable
+  try {
+    const variableId = await getVariableId('Icon size', size.toString());
+    if (variableId) {
+      component.setBoundVariable('width', variableId);
+      component.setBoundVariable('height', variableId);
+    }
+  } catch (e) {
+    // If variable binding fails, the component still works without it
+  }
+
   return component;
 }
 

@@ -156,7 +156,7 @@ export async function createIconSet(
       const iconClone = flattenedVector.clone();
 
       // Create icon component
-      const component = createIconComponent(iconClone, sizeNum, strokeWeight, originalWidth, originalHeight);
+      const component = await createIconComponent(iconClone, sizeNum, strokeWeight, originalWidth, originalHeight);
 
       // Position the frame
       component.x = xPos;

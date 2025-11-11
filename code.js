@@ -15,7 +15,19 @@
       }
     }
   }
-  function createIconComponent(iconClone, size, strokeWeight, originalWidth, originalHeight) {
+  async function getVariableId(collectionName, variableName) {
+    const collections = await figma.variables.getLocalVariablesAsync();
+    for (const variable of collections) {
+      if (variable.name === variableName && variable.variableCollectionId) {
+        const collection = await figma.variables.getVariableCollectionById(variable.variableCollectionId);
+        if (collection && collection.name === collectionName) {
+          return variable.id;
+        }
+      }
+    }
+    return null;
+  }
+  async function createIconComponent(iconClone, size, strokeWeight, originalWidth, originalHeight) {
     const maxOriginalDim = Math.max(originalWidth, originalHeight);
     const scaleFactor = size / maxOriginalDim;
     iconClone.resize(originalWidth * scaleFactor, originalHeight * scaleFactor);
@@ -42,6 +54,14 @@
     iconClone.y = offsetY;
     frame.name = `Size=${size}`;
     const component = figma.createComponentFromNode(frame);
+    try {
+      const variableId = await getVariableId("Icon size", size.toString());
+      if (variableId) {
+        component.setBoundVariable("width", variableId);
+        component.setBoundVariable("height", variableId);
+      }
+    } catch (e) {
+    }
     return component;
   }
   function centerComponentsInFrame(componentSet, frameWidth, frameHeight) {
@@ -266,7 +286,7 @@
       for (const [size, strokeWeight] of Object.entries(SIZES_AND_WEIGHTS)) {
         const sizeNum = parseInt(size);
         const iconClone = flattenedVector.clone();
-        const component = createIconComponent(iconClone, sizeNum, strokeWeight, originalWidth, originalHeight);
+        const component = await createIconComponent(iconClone, sizeNum, strokeWeight, originalWidth, originalHeight);
         component.x = xPos;
         component.y = frameYPos;
         xPos += component.width + SPACING;
@@ -368,7 +388,7 @@
       const originalWidth = extraction.originalWidth;
       const originalHeight = extraction.originalHeight;
       const iconClone = flattenedVector.clone();
-      const component = createIconComponent(
+      const component = await createIconComponent(
         iconClone,
         ICON_SIZE,
         STROKE_WEIGHT,
