@@ -16,16 +16,29 @@
     }
   }
   async function getVariableId(collectionName, variableName) {
-    const collections = await figma.variables.getLocalVariablesAsync();
-    for (const variable of collections) {
-      if (variable.name === variableName && variable.variableCollectionId) {
-        const collection = await figma.variables.getVariableCollectionById(variable.variableCollectionId);
-        if (collection && collection.name === collectionName) {
-          return variable.id;
+    try {
+      const variables = await figma.variables.getLocalVariablesAsync();
+      console.log(`Looking for variable "${variableName}" in collection "${collectionName}"`);
+      console.log(`Total variables found: ${variables.length}`);
+      for (const variable of variables) {
+        console.log(`Variable: ${variable.name}, Collection ID: ${variable.variableCollectionId}`);
+        if (variable.variableCollectionId) {
+          const collection = await figma.variables.getVariableCollectionById(variable.variableCollectionId);
+          if (collection) {
+            console.log(`  \u2192 Collection name: "${collection.name}"`);
+            if (collection.name === collectionName && variable.name === variableName) {
+              console.log(`  \u2713 MATCHED!`);
+              return variable.id;
+            }
+          }
         }
       }
+      console.log(`No matching variable found for "${variableName}" in "${collectionName}"`);
+      return null;
+    } catch (e) {
+      console.error("Error getting variables:", e);
+      return null;
     }
-    return null;
   }
   async function createIconComponent(iconClone, size, strokeWeight, originalWidth, originalHeight) {
     const maxOriginalDim = Math.max(originalWidth, originalHeight);
@@ -57,10 +70,20 @@
     try {
       const variableId = await getVariableId("Icon size", size.toString());
       if (variableId) {
-        component.setBoundVariable("width", variableId);
-        component.setBoundVariable("height", variableId);
+        const componentAny = component;
+        if (componentAny.setBoundVariable) {
+          componentAny.setBoundVariable("width", variableId);
+          componentAny.setBoundVariable("height", variableId);
+        } else if (componentAny.setBinding) {
+          componentAny.setBinding("width", variableId);
+          componentAny.setBinding("height", variableId);
+        }
+        console.log(`Bound component to variable ${size} (ID: ${variableId})`);
+      } else {
+        console.log(`Could not find variable for size ${size}`);
       }
     } catch (e) {
+      console.error("Variable binding error:", e);
     }
     return component;
   }
