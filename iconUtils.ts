@@ -70,12 +70,18 @@ function getColorStyle(stylePath: string): PaintStyle | null {
   try {
     const styles = figma.getLocalPaintStyles();
 
+    console.log(`Looking for color style: "${stylePath}"`);
+    console.log(`Total paint styles found: ${styles.length}`);
+
     for (const style of styles) {
+      console.log(`  - Style name: "${style.name}"`);
       if (style.name === stylePath) {
+        console.log(`  ✓ MATCHED!`);
         return style;
       }
     }
 
+    console.log(`Color style "${stylePath}" not found`);
     return null;
   } catch (e) {
     console.error('Error getting color styles:', e);
