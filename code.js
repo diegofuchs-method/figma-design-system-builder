@@ -15,6 +15,19 @@
       }
     }
   }
+  function applyStrokeStyleRecursive(node, styleId) {
+    if ("strokeStyleId" in node) {
+      node.strokeStyleId = styleId;
+    }
+    if ("children" in node) {
+      const children = node.children;
+      if (children && Array.isArray(children)) {
+        children.forEach((child) => {
+          applyStrokeStyleRecursive(child, styleId);
+        });
+      }
+    }
+  }
   async function getVariable(size) {
     try {
       const variables = await figma.variables.getLocalVariablesAsync();
@@ -27,6 +40,20 @@
       return null;
     } catch (e) {
       console.error("Error getting variables:", e);
+      return null;
+    }
+  }
+  function getColorStyle(stylePath) {
+    try {
+      const styles = figma.getLocalPaintStyles();
+      for (const style of styles) {
+        if (style.name === stylePath) {
+          return style;
+        }
+      }
+      return null;
+    } catch (e) {
+      console.error("Error getting color styles:", e);
       return null;
     }
   }
@@ -44,6 +71,13 @@
     iconClone.x += offsetXFor83;
     iconClone.y += offsetYFor83;
     applyStrokeWeightRecursive(iconClone, strokeWeight);
+    const colorStyle = getColorStyle("Grey/Grey-Primary");
+    if (colorStyle) {
+      applyStrokeStyleRecursive(iconClone, colorStyle.id);
+      console.log(`\u2713 Applied Grey/Grey-Primary stroke style`);
+    } else {
+      console.log(`Could not find Grey/Grey-Primary color style`);
+    }
     iconClone.name = "Icon";
     const frame = figma.createFrame();
     frame.resize(size, size);
