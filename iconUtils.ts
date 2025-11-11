@@ -25,7 +25,7 @@ export function applyStrokeWeightRecursive(node: BaseNode, weight: number): void
 /**
  * Finds a variable by size number (e.g., 24 -> "Icon size/24")
  */
-async function getVariableId(size: number): Promise<string | null> {
+async function getVariable(size: number): Promise<Variable | null> {
   try {
     const variables = await figma.variables.getLocalVariablesAsync();
 
@@ -34,7 +34,7 @@ async function getVariableId(size: number): Promise<string | null> {
 
     for (const variable of variables) {
       if (variable.name === variablePath) {
-        return variable.id;
+        return variable;
       }
     }
 
@@ -106,18 +106,14 @@ export async function createIconComponent(
 
   // Bind width and height to the "Icon size/{size}" variable
   try {
-    const variableId = await getVariableId(size);
-    if (variableId) {
+    const variable = await getVariable(size);
+    if (variable) {
       const componentAny = component as any;
 
-      // Try different methods to bind the variable
+      // Use the new API which expects the Variable object instead of ID
       if (componentAny.setBoundVariable) {
-        componentAny.setBoundVariable('width', variableId);
-        componentAny.setBoundVariable('height', variableId);
-        console.log(`✓ Bound component to Icon size/${size} variable`);
-      } else if (componentAny.setBinding) {
-        componentAny.setBinding('width', variableId);
-        componentAny.setBinding('height', variableId);
+        componentAny.setBoundVariable('width', variable);
+        componentAny.setBoundVariable('height', variable);
         console.log(`✓ Bound component to Icon size/${size} variable`);
       } else {
         console.log(`Component doesn't support variable binding`);

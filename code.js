@@ -15,13 +15,13 @@
       }
     }
   }
-  async function getVariableId(size) {
+  async function getVariable(size) {
     try {
       const variables = await figma.variables.getLocalVariablesAsync();
       const variablePath = `Icon size/${size}`;
       for (const variable of variables) {
         if (variable.name === variablePath) {
-          return variable.id;
+          return variable;
         }
       }
       return null;
@@ -58,16 +58,12 @@
     frame.name = `Size=${size}`;
     const component = figma.createComponentFromNode(frame);
     try {
-      const variableId = await getVariableId(size);
-      if (variableId) {
+      const variable = await getVariable(size);
+      if (variable) {
         const componentAny = component;
         if (componentAny.setBoundVariable) {
-          componentAny.setBoundVariable("width", variableId);
-          componentAny.setBoundVariable("height", variableId);
-          console.log(`\u2713 Bound component to Icon size/${size} variable`);
-        } else if (componentAny.setBinding) {
-          componentAny.setBinding("width", variableId);
-          componentAny.setBinding("height", variableId);
+          componentAny.setBoundVariable("width", variable);
+          componentAny.setBoundVariable("height", variable);
           console.log(`\u2713 Bound component to Icon size/${size} variable`);
         } else {
           console.log(`Component doesn't support variable binding`);
