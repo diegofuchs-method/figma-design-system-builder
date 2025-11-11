@@ -23,24 +23,6 @@ export function applyStrokeWeightRecursive(node: BaseNode, weight: number): void
 }
 
 /**
- * Recursively applies a stroke color style to all vectors in a node
- */
-function applyStrokeStyleRecursive(node: BaseNode, styleId: string): void {
-  if ('strokeStyleId' in node) {
-    (node as any).strokeStyleId = styleId;
-  }
-
-  if ('children' in node) {
-    const children = (node as any).children;
-    if (children && Array.isArray(children)) {
-      children.forEach((child: BaseNode) => {
-        applyStrokeStyleRecursive(child, styleId);
-      });
-    }
-  }
-}
-
-/**
  * Finds a variable by size number (e.g., 24 -> "Icon size/24")
  */
 async function getVariable(size: number): Promise<Variable | null> {
@@ -59,32 +41,6 @@ async function getVariable(size: number): Promise<Variable | null> {
     return null;
   } catch (e) {
     console.error('Error getting variables:', e);
-    return null;
-  }
-}
-
-/**
- * Finds a color style by name (e.g., "Grey/Grey-Primary")
- */
-function getColorStyle(stylePath: string): PaintStyle | null {
-  try {
-    const styles = figma.getLocalPaintStyles();
-
-    console.log(`Looking for color style: "${stylePath}"`);
-    console.log(`Total paint styles found: ${styles.length}`);
-
-    for (const style of styles) {
-      console.log(`  - Style name: "${style.name}"`);
-      if (style.name === stylePath) {
-        console.log(`  ✓ MATCHED!`);
-        return style;
-      }
-    }
-
-    console.log(`Color style "${stylePath}" not found`);
-    return null;
-  } catch (e) {
-    console.error('Error getting color styles:', e);
     return null;
   }
 }
@@ -123,15 +79,6 @@ export async function createIconComponent(
 
   // Apply stroke weight
   applyStrokeWeightRecursive(iconClone, strokeWeight);
-
-  // Apply stroke color style
-  const colorStyle = getColorStyle('Grey/Grey-Primary');
-  if (colorStyle) {
-    applyStrokeStyleRecursive(iconClone, colorStyle.id);
-    console.log(`✓ Applied Grey/Grey-Primary stroke style`);
-  } else {
-    console.log(`Could not find Grey/Grey-Primary color style`);
-  }
 
   // Rename the icon
   iconClone.name = 'Icon';
