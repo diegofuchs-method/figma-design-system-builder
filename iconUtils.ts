@@ -23,31 +23,21 @@ export function applyStrokeWeightRecursive(node: BaseNode, weight: number): void
 }
 
 /**
- * Finds a variable by collection name and variable name
+ * Finds a variable by size number (e.g., 24 -> "Icon size/24")
  */
-async function getVariableId(collectionName: string, variableName: string): Promise<string | null> {
+async function getVariableId(size: number): Promise<string | null> {
   try {
     const variables = await figma.variables.getLocalVariablesAsync();
 
-    console.log(`Looking for variable "${variableName}" in collection "${collectionName}"`);
-    console.log(`Total variables found: ${variables.length}`);
+    // Variables in Figma use the path format: "Icon size/24"
+    const variablePath = `Icon size/${size}`;
 
     for (const variable of variables) {
-      console.log(`Variable: ${variable.name}, Collection ID: ${variable.variableCollectionId}`);
-
-      if (variable.variableCollectionId) {
-        const collection = await figma.variables.getVariableCollectionById(variable.variableCollectionId);
-        if (collection) {
-          console.log(`  → Collection name: "${collection.name}"`);
-          if (collection.name === collectionName && variable.name === variableName) {
-            console.log(`  ✓ MATCHED!`);
-            return variable.id;
-          }
-        }
+      if (variable.name === variablePath) {
+        return variable.id;
       }
     }
 
-    console.log(`No matching variable found for "${variableName}" in "${collectionName}"`);
     return null;
   } catch (e) {
     console.error('Error getting variables:', e);
@@ -114,9 +104,9 @@ export async function createIconComponent(
   // Create component from the frame
   const component = figma.createComponentFromNode(frame);
 
-  // Bind width and height to the "Icon size" variable
+  // Bind width and height to the "Icon size/{size}" variable
   try {
-    const variableId = await getVariableId('Icon size', size.toString());
+    const variableId = await getVariableId(size);
     if (variableId) {
       const componentAny = component as any;
 
@@ -124,12 +114,14 @@ export async function createIconComponent(
       if (componentAny.setBoundVariable) {
         componentAny.setBoundVariable('width', variableId);
         componentAny.setBoundVariable('height', variableId);
+        console.log(`✓ Bound component to Icon size/${size} variable`);
       } else if (componentAny.setBinding) {
         componentAny.setBinding('width', variableId);
         componentAny.setBinding('height', variableId);
+        console.log(`✓ Bound component to Icon size/${size} variable`);
+      } else {
+        console.log(`Component doesn't support variable binding`);
       }
-
-      console.log(`Bound component to variable ${size} (ID: ${variableId})`);
     } else {
       console.log(`Could not find variable for size ${size}`);
     }

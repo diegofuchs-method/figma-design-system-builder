@@ -15,25 +15,15 @@
       }
     }
   }
-  async function getVariableId(collectionName, variableName) {
+  async function getVariableId(size) {
     try {
       const variables = await figma.variables.getLocalVariablesAsync();
-      console.log(`Looking for variable "${variableName}" in collection "${collectionName}"`);
-      console.log(`Total variables found: ${variables.length}`);
+      const variablePath = `Icon size/${size}`;
       for (const variable of variables) {
-        console.log(`Variable: ${variable.name}, Collection ID: ${variable.variableCollectionId}`);
-        if (variable.variableCollectionId) {
-          const collection = await figma.variables.getVariableCollectionById(variable.variableCollectionId);
-          if (collection) {
-            console.log(`  \u2192 Collection name: "${collection.name}"`);
-            if (collection.name === collectionName && variable.name === variableName) {
-              console.log(`  \u2713 MATCHED!`);
-              return variable.id;
-            }
-          }
+        if (variable.name === variablePath) {
+          return variable.id;
         }
       }
-      console.log(`No matching variable found for "${variableName}" in "${collectionName}"`);
       return null;
     } catch (e) {
       console.error("Error getting variables:", e);
@@ -68,17 +58,20 @@
     frame.name = `Size=${size}`;
     const component = figma.createComponentFromNode(frame);
     try {
-      const variableId = await getVariableId("Icon size", size.toString());
+      const variableId = await getVariableId(size);
       if (variableId) {
         const componentAny = component;
         if (componentAny.setBoundVariable) {
           componentAny.setBoundVariable("width", variableId);
           componentAny.setBoundVariable("height", variableId);
+          console.log(`\u2713 Bound component to Icon size/${size} variable`);
         } else if (componentAny.setBinding) {
           componentAny.setBinding("width", variableId);
           componentAny.setBinding("height", variableId);
+          console.log(`\u2713 Bound component to Icon size/${size} variable`);
+        } else {
+          console.log(`Component doesn't support variable binding`);
         }
-        console.log(`Bound component to variable ${size} (ID: ${variableId})`);
       } else {
         console.log(`Could not find variable for size ${size}`);
       }
